@@ -1,5 +1,5 @@
 {
-  "name": "af-santa",
+  "name": "sp-santa",
   "scripts": {
     "build": "node build.js"
   },
