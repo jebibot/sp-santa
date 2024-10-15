@@ -1,5 +1,4 @@
 (async () => {
-  const toast = document.querySelector(".toast_message.chat");
   const nAllViewer = document.getElementById("nAllViewer");
 
   const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -97,14 +96,8 @@
     return result;
   };
 
-  if (toast != null) {
-    toast.querySelector("p").textContent = "참여자 목록을 가져오는 중입니다.";
-    toast.style.display = "";
-  }
+  liveView.Chat.showToastMsg?.("참여자 목록을 가져오는 중입니다.");
   const userList = await getList();
-  if (toast != null) {
-    toast.style.display = "none";
-  }
   if (userList == null) {
     alert("참여자 목록을 가져오는데 실패했습니다.");
     return;
@@ -118,38 +111,35 @@
     서포터: "supporter",
     일반: "normal",
   };
-  const type =
-    TYPE_MAP[
-      prompt(
-        "선물할 대상을 입력해주세요.\n(매니저, 열혈팬, 구독팬, 팬, 서포터, 일반)"
-      )
-    ];
+  const types = prompt(
+    "선물할 대상을 콤마로 구분하여 입력해주세요.\n(매니저, 열혈팬, 구독팬, 팬, 서포터, 일반)"
+  );
   const num = Number(prompt("선물할 인원을 입력해주세요."));
   if (isNaN(num) || num < 1) {
     alert("잘못된 인원입니다.");
     return;
   }
-  const list = userList[type];
-  if (list == null || list.length === 0) {
+  let list = [];
+  for (const t of types.split(",")) {
+    const l = userList[TYPE_MAP[t.trim()]];
+    if (l != null) {
+      list = list.concat(l);
+    }
+  }
+  if (list.length === 0) {
     alert("대상이 없습니다.");
     return;
   }
 
-  if (toast != null) {
-    toast.querySelector("p").textContent = "선물 중입니다.";
-    toast.style.display = "";
-  }
+  liveView.Chat.showToastMsg?.("선물 중입니다.");
   const giftList = list.length <= num ? list : getRandom(list, num);
+  const giftSet = new Set(giftList.map((user) => user.id.split("(")[0]));
   const result = [];
-  for (const user of giftList) {
-    const userId = user.id.split("(")[0];
-    result.push((await giftSubscription(userId)) || `선물 실패: ${userId}`);
+  for (const user of giftSet) {
+    result.push((await giftSubscription(user)) || `선물 실패: ${user}`);
     await wait(100);
   }
   alert(result.join("\n"));
-  if (toast != null) {
-    toast.style.display = "none";
-  }
 })().catch(() => {
   alert("오류가 발생했습니다.");
 });
