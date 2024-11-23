@@ -44,9 +44,9 @@
         szChatId: liveView.ChatInfo.myUserInfo.szUserChatId,
         szSubscriptionBj: szBjId,
         nBroadNo,
-        nItemType: "1",
+        nItemType: "11",
         broad_no: nBroadNo,
-        sys_type: "HTML5",
+        sys_type: "html5",
         location: "live",
       });
       const sendItem = await fetch(
