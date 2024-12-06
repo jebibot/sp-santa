@@ -15,8 +15,11 @@ const { minify } = require("terser");
 
   let html = fs.readFileSync("docs/index.html", "utf8");
   html = html.replace(
-    /href="javascript:([^"]+)"/g,
-    `href="javascript:${encodeURI(minified)}"`
+    /data-type="(\d+)" href="javascript:(?:[^"]+)"/g,
+    (_, type) =>
+      `data-type="${type}" href="javascript:${encodeURI(
+        minified.replace("__ITEM_TYPE__", type)
+      )}"`
   );
   fs.writeFileSync("docs/index.html", html, "utf8");
 })();

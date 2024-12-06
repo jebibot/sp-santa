@@ -44,7 +44,7 @@
         szChatId: liveView.ChatInfo.myUserInfo.szUserChatId,
         szSubscriptionBj: szBjId,
         nBroadNo,
-        nItemType: "11",
+        nItemType: "__ITEM_TYPE__",
         broad_no: nBroadNo,
         sys_type: "html5",
         location: "live",
