@@ -4,6 +4,6 @@
     "build": "node build.js"
   },
   "devDependencies": {
-    "terser": "^5.34.1"
+    "terser": "^5.37.0"
   }
 }
